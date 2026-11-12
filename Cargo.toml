@@ -1,0 +1,29 @@
+[package]
+name = "weirdnet-update"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+description = "Weirdnet update metadata: org roots with k-of-n Ed25519 keys and release-key delegations, signed update manifests, optional timestamp freshness and revocation, anti-rollback state, on-device targeting rules and staged rollouts, opt-in consent policy and a boot-health state machine."
+authors = ["Michael Christenson II <m3talsmith@gmail.com>"]
+license = "BSD-3-Clause"
+repository = "https://github.com/WeirdBrains/weirdnet-update"
+documentation = "https://docs.rs/weirdnet-update"
+readme = "README.md"
+keywords = ["update", "ota", "signing", "ed25519", "weirdnet"]
+categories = ["cryptography"]
+include = ["src/**", "README.md", "SECURITY.md", "CHANGELOG.md", "LICENSE"]
+
+[dependencies]
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_bytes = "0.11"
+ciborium = "0.2"
+hex = "0.4"
+blake3 = "1"
+ed25519-dalek = { version = "2.2", features = ["zeroize"] }
+getrandom = "0.2"
+zeroize = "1"
+semver = { version = "1", features = ["serde"] }
+
+[dev-dependencies]
+serde_json = "1"
