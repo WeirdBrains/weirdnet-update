@@ -1,0 +1,33 @@
+# weirdnet-update release config for weirdnet-project-helpers (scripts/weirdnet_release.py).
+# Usage: python3 scripts/weirdnet_release.py [--patch|--major|--version X.Y.Z] [--dry-run]
+# Notes come from CHANGELOG.md `## [Unreleased]`; a message is optional.
+helpers = "0.1.1"
+project = "weirdnet-update"
+next = ["docs.rs builds https://docs.rs/weirdnet-update/{version} from the crates.io upload"]
+
+[env]
+CARGO_TARGET_DIR = "/mnt/ext1/scratch/salty-gull/cargo-target"
+
+[[files]]
+kind = "cargo-package"
+paths = ["Cargo.toml"]
+primary = true
+
+[[files]]
+kind = "cargo-lock"
+path = "Cargo.lock"
+packages = ["weirdnet-update"]
+
+[changelog]
+path = "CHANGELOG.md"
+
+[checks]
+commands = [
+  "cargo fmt --all -- --check",
+  "cargo clippy --all-targets --all-features -- -D warnings",
+  "cargo test --all-features",
+  "RUSTDOCFLAGS='-D warnings' cargo doc --no-deps --all-features",
+]
+
+[crates]
+publish = ["."]

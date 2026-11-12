@@ -1,6 +1,6 @@
 [package]
 name = "weirdnet-update"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2024"
 rust-version = "1.99"
 description = "Weirdnet update metadata: org roots with k-of-n Ed25519 keys and release-key delegations, signed update manifests, optional timestamp freshness and revocation, anti-rollback state, on-device targeting rules and staged rollouts, opt-in consent policy and a boot-health state machine."
