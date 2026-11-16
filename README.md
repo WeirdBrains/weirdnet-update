@@ -39,7 +39,15 @@ if update.applies(&device) == Applicability::Applies {
 }
 ```
 
-Not in this crate: transport (announcements and content transfer live in `weirdnet-net`),
+- **Announcements** (`announce`): small signed notices that a manifest exists (app, channel,
+  seq, manifest hash, fetch hints), signed by the release keys under
+  `weirdnet-update/v1/announcement`. Relays carry them so devices behind NAT hear about
+  updates: a `Carrier` keeps the latest per org, app and channel for the orgs it trusts.
+  `Client::verify_announcement` checks one on the device; the full bundle is still fetched
+  and verified. Feature `wire` adds the stream protocol `/weirdnet/updates/1` (subscribe,
+  publish), carried by weirdnet-relay.
+
+Not in this crate: transport (streams and content transfer live in `weirdnet-net`),
 installers and package-manager hand-off (Salty Gull's `salty-client`), and UI.
 
 See [SECURITY.md](SECURITY.md) for the threat model covered by tests. Not audited.

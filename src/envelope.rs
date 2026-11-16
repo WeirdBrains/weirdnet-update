@@ -26,6 +26,8 @@ pub enum Domain {
     Manifest,
     /// A [`Freshness`](crate::Freshness) record.
     Freshness,
+    /// An [`Announcement`](crate::announce::Announcement).
+    Announcement,
 }
 
 impl Domain {
@@ -35,6 +37,7 @@ impl Domain {
             Self::Root => "weirdnet-update/v1/root",
             Self::Manifest => "weirdnet-update/v1/manifest",
             Self::Freshness => "weirdnet-update/v1/freshness",
+            Self::Announcement => "weirdnet-update/v1/announcement",
         }
     }
 }
@@ -45,6 +48,7 @@ impl fmt::Display for Domain {
             Self::Root => "root",
             Self::Manifest => "manifest",
             Self::Freshness => "freshness",
+            Self::Announcement => "announcement",
         })
     }
 }

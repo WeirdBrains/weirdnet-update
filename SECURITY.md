@@ -31,13 +31,22 @@ Not audited. This records what the 0.1 design checks and what it leaves to calle
 - Consent: nothing installs without an opt-in (auto mode or a per-update accept); new
   capabilities always ask; declines are remembered; F-Droid stays off until the bypass wording
   is acknowledged.
+- Announcements: forged, tampered or out-of-scope ones, other orgs' pins, expired or
+  future-dated ones, and manifest signatures replayed as announcements are refused. Carriers
+  keep only announcements for orgs they trust, never let an older seq replace a newer one,
+  follow root rotations only from their trusted root, and stay bounded.
 
 ## Limits
 
 - Apps whose root trusts no timestamp key get weaker freeze protection (bounded by the
   manifest expiry the org chose), and takedowns can't reach installed copies.
 - Envelope payloads are decoded before verification only for the initial root (whose keys are
-  checked against the pin first) and for rotations (after the old threshold verified).
+  checked against the pin first), for rotations (after the old threshold verified) and for
+  announcements (to learn which app and channel's keys to check; nothing is used before the
+  check passes).
+- An announcement only says a manifest exists. It never makes an update acceptable: the
+  device still fetches the bundle and runs the full acceptance rule, and consent still
+  applies. A carrier can withhold announcements, so devices should also poll.
 - Cohort tokens, platform signing-identity comparison, minisign checks and installers are the
   caller's (`salty-client`).
 - The rollout bucket secret and the consent log are stored by the app; this crate never writes

@@ -16,9 +16,11 @@
 //! - [`target`] and [`rollout`]: targeting rules and staged rollouts, evaluated on the device.
 //! - [`policy`]: the opt-in consent policy. Updates are never forced.
 //! - [`health`]: boot counting and automatic local rollback.
+//! - [`announce`]: signed update announcements, carried by relays to devices behind NAT.
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
+pub mod announce;
 pub mod bytes;
 pub mod envelope;
 pub mod error;
@@ -37,6 +39,7 @@ pub mod verify;
 mod cbor;
 mod ids;
 
+pub use announce::Announcement;
 pub use bytes::Hash32;
 pub use envelope::{Domain, Signed};
 pub use error::{Error, Result};

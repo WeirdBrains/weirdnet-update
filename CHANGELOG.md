@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- Signed update announcements, a carrier that keeps the latest per org, app and channel, and on-device checks.
+- The `wire` feature: the announcement stream protocol relays carry.
+
 ## [0.1.0] - 2026-11-12
 
 ### Added

@@ -275,6 +275,16 @@ impl Client {
         Ok(())
     }
 
+    /// Checks an announcement heard from a relay against the trusted root, and whether it is
+    /// news: `Ok(None)` if this client already saw that seq or a later one. On `Some`, fetch
+    /// the bundle (from the announcement's sources or anywhere) and run [`Client::verify`];
+    /// the announcement itself never makes an update acceptable.
+    pub fn verify_announcement(&self, env: &Signed, now: Timestamp) -> Result<Option<crate::announce::Announcement>> {
+        let a = crate::announce::Announcement::verify(env, self.pin, &self.root, now)?;
+        let seen = self.state.seen.get(&channel_key(&a.app, &a.channel));
+        Ok(if seen.is_some_and(|s| a.seq <= s.seq) { None } else { Some(a) })
+    }
+
     /// Records that an update was installed and committed (after its boot check).
     pub fn mark_installed(&mut self, update: &VerifiedUpdate) {
         let m = &update.manifest;

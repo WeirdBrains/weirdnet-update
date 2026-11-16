@@ -24,6 +24,12 @@ ed25519-dalek = { version = "2.2", features = ["zeroize"] }
 getrandom = "0.2"
 zeroize = "1"
 semver = { version = "1", features = ["serde"] }
+futures-util = { version = "0.3", default-features = false, features = ["std", "io"], optional = true }
+
+[features]
+# The announcement stream protocol (`announce::wire`).
+wire = ["dep:futures-util"]
 
 [dev-dependencies]
 serde_json = "1"
+futures-util = { version = "0.3", default-features = false, features = ["std", "io", "async-await-macro"] }
