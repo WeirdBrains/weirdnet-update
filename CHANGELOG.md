@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-16
+
 ### Added
 
 - Signed update announcements, a carrier that keeps the latest per org, app and channel, and on-device checks.
