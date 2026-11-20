@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-20
+
 ### Added
 
 - `UNSIGNED` (`"unsigned"`): the signing identity of a plain file set with no platform signature, accepted only for `tar-gz` and `zip` packages. `FullPackage::platform_signed` and `FullPackage::signing_identity_matches(running)` (equal identities only, so `unsigned` matches only `unsigned`).
