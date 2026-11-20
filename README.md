@@ -1,6 +1,6 @@
 # weirdnet-update
 
-Signed update metadata and client-side checks for Weirdnet apps. Salty Gull (the WeirdBrains
+Signed update metadata and client-side checks for Weirdnet apps. Salty Gull (the [WeirdBrains](https://weirdbrains.com)
 over-the-air update service for Flutter apps) builds on it; nothing here is Flutter-specific.
 
 - **Org roots** (`root`): k-of-n Ed25519 root keys, release-key delegations scoped to apps and

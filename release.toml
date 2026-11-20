@@ -5,9 +5,6 @@ helpers = "0.1.1"
 project = "weirdnet-update"
 next = ["docs.rs builds https://docs.rs/weirdnet-update/{version} from the crates.io upload"]
 
-[env]
-CARGO_TARGET_DIR = "/path/to/cargo-target"
-
 [[files]]
 kind = "cargo-package"
 paths = ["Cargo.toml"]
