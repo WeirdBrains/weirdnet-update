@@ -47,8 +47,12 @@ Not audited. This records what the 0.1 design checks and what it leaves to calle
 - An announcement only says a manifest exists. It never makes an update acceptable: the
   device still fetches the bundle and runs the full acceptance rule, and consent still
   applies. A carrier can withhold announcements, so devices should also poll.
-- Cohort tokens, platform signing-identity comparison, minisign checks and installers are the
-  caller's (`salty-client`).
+- A full package's signing identity may be `unsigned` only for tar.gz and zip (validation
+  refuses it for any format with a platform signature or installer).
+  `FullPackage::signing_identity_matches(running)` needs equal identities, so an update can't
+  strip a platform signature from a signed install or add one silently; clients must call it.
+- Cohort tokens, platform signature checks, minisign checks and installers are the caller's
+  (`salty-client`).
 - The rollout bucket secret and the consent log are stored by the app; this crate never writes
   files.
 - No fuzzing yet.

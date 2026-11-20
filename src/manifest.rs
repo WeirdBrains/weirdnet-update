@@ -104,6 +104,11 @@ impl PackageFormat {
     }
 }
 
+/// The [`FullPackage::signing_identity`] of a plain file set with no platform signature: its
+/// integrity rests only on the root chain, the release key and the per-file BLAKE3 hashes.
+/// Allowed only for [`PackageFormat::TarGz`] and [`PackageFormat::Zip`].
+pub const UNSIGNED: &str = "unsigned";
+
 /// A full, signed replacement build.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FullPackage {
@@ -116,6 +121,20 @@ pub struct FullPackage {
     /// The platform signing identity the package must keep (APK cert SHA-256, Apple Team ID,
     /// Authenticode subject). The client compares it with the running build's.
     pub signing_identity: String,
+}
+
+impl FullPackage {
+    /// Whether the package names a real platform signing identity (not [`UNSIGNED`]).
+    pub fn platform_signed(&self) -> bool {
+        self.signing_identity != UNSIGNED
+    }
+
+    /// Whether this package may replace a build whose signing identity is `running`. Identities
+    /// must be equal, so an update never strips a platform signature from a signed install nor
+    /// adds one silently ([`UNSIGNED`] matches only [`UNSIGNED`]).
+    pub fn signing_identity_matches(&self, running: &str) -> bool {
+        self.signing_identity == running
+    }
 }
 
 /// A Dart code patch. **Placeholder:** the format is reserved so manifests can name it, but no
@@ -360,7 +379,12 @@ impl UpdateManifest {
                 }
             }
             _ if self.files.is_empty() => return Err(Error::invalid("manifest", "no files")),
-            UpdateKind::Full(p) => check_id("signing identity", &p.signing_identity)?,
+            UpdateKind::Full(p) => {
+                check_id("signing identity", &p.signing_identity)?;
+                if !p.platform_signed() && !matches!(p.format, PackageFormat::TarGz | PackageFormat::Zip) {
+                    return Err(Error::invalid("manifest", "only tar-gz and zip packages may be unsigned"));
+                }
+            }
             UpdateKind::DartPatch(p) => check_id("engine hash", &p.engine_hash)?,
             UpdateKind::Assets | UpdateKind::Wasm { .. } => {}
         }

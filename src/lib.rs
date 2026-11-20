@@ -45,7 +45,7 @@ pub use envelope::{Domain, Signed};
 pub use error::{Error, Result};
 pub use freshness::Freshness;
 pub use keys::{PublicKey, Signature, SigningKey};
-pub use manifest::{FileEntry, UpdateKind, UpdateManifest};
+pub use manifest::{FileEntry, UNSIGNED, UpdateKind, UpdateManifest};
 pub use policy::{ConsentMode, Decision, Flavor, Policy};
 pub use root::{Delegation, Root, RootPin};
 pub use state::ClientState;

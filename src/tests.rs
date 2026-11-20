@@ -875,3 +875,30 @@ fn end_to_end_failed_update_is_never_offered_again() {
     }
     assert_eq!(check(&mut c, &b).unwrap_err(), Error::KnownBad("u1".into()));
 }
+
+#[test]
+fn unsigned_is_only_for_plain_file_sets_and_matches_only_itself() {
+    let o = org(false);
+    let unsigned = |format| {
+        let mut m = full("1.1.0");
+        let UpdateKind::Full(p) = &mut m.kind else { unreachable!() };
+        p.signing_identity = UNSIGNED.into();
+        p.format = format;
+        m
+    };
+    for format in [PackageFormat::TarGz, PackageFormat::Zip] {
+        let m = unsigned(format);
+        m.validate().unwrap();
+        check(&mut client(&o), &bundle(&o, &m)).unwrap();
+    }
+    for format in [PackageFormat::App, PackageFormat::Exe, PackageFormat::Deb, PackageFormat::Msi, PackageFormat::Apk] {
+        assert!(unsigned(format).validate().is_err(), "{format:?}");
+    }
+    let UpdateKind::Full(plain) = unsigned(PackageFormat::TarGz).kind else { unreachable!() };
+    let UpdateKind::Full(signed) = full("1.1.0").kind else { unreachable!() };
+    assert!(!plain.platform_signed() && signed.platform_signed());
+    assert!(plain.signing_identity_matches(UNSIGNED));
+    assert!(!plain.signing_identity_matches("minisign:61BA1720747F9146"), "never strips a signature");
+    assert!(!signed.signing_identity_matches(UNSIGNED), "never adds one silently");
+    assert!(signed.signing_identity_matches("minisign:61BA1720747F9146"));
+}

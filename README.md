@@ -11,7 +11,9 @@ over-the-air update service for Flutter apps) builds on it; nothing here is Flut
   per-file size and BLAKE3, client-version range, requested capabilities, security and
   "recommended" labels, a targeting rule, a staged rollout, an optional rollback target,
   notes and an expiry. Kinds: assets (including Remote Flutter Widgets files), Wasm (with a host
-  ABI version), full signed package (platform, arch, format, platform signing identity), a
+  ABI version), full signed package (platform, arch, format, platform signing identity;
+  `UNSIGNED` = `"unsigned"` for plain tar.gz and zip file sets, which rest only on the root
+  chain, the release key and the per-file hashes), a
   reserved Dart patch placeholder that clients refuse by default, and store notices.
 - **Freshness** (`freshness`): optional short-lived records from timestamp keys naming the
   latest manifest, revocations and a rollout cap (pause). Required only when the root lists
