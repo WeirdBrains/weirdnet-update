@@ -3,6 +3,7 @@
 # Notes come from CHANGELOG.md `## [Unreleased]`; a message is optional.
 helpers = "0.1.1"
 project = "weirdnet-update"
+branch = "maint/0.1"
 next = ["docs.rs builds https://docs.rs/weirdnet-update/{version} from the crates.io upload"]
 
 [[files]]
